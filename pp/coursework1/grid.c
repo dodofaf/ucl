@@ -191,6 +191,8 @@ void initialize_grid(Grid *grid, int draw)
 	for (int i=0;i<grid->height;++i) {
         grid->map[i] = (int*)malloc(grid->width * sizeof(int));
     }
+    grid->markers = NULL;
+    grid->number_of_markers = 0;
 
     initialize_window(grid);
     generate_random_arena_with_obstacles(grid, draw);
