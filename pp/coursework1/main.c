@@ -75,8 +75,8 @@ void recursive_dfs(Grid *grid, Robot *robot, struct robot_memory *memory, int dr
 
     right(robot);
     memory->dir = (memory->dir+270)%360;
-    memory->pos = next_position(memory->pos, memory->dir);
-    if (canMoveForward(robot, grid)) {
+    if (!equal(memory->pos, (Position){0,0})) {
+        memory->pos = next_position(memory->pos, memory->dir);
         forward(robot);
         right(robot);
         right(robot);

@@ -1,6 +1,6 @@
 # Description
 
-This program is the realization of stage 5 of Coursework 1 of Principles of Programming made by Maksym Skulysh.
+This program is the realization of stage 5 of Coursework 1 of Principles of Programming.
 
 It creates a grid of a random size and makes a random oval-shaped arena with obstacles and markers inside it. There is only one big free space inside it, which is created by using a DFS-like algorithm that carves out this space.
 
@@ -22,7 +22,7 @@ gcc -o main main.c grid.c robot.c graphics.c
 # Usage
 Without arguments:
 ```bash
-./main -h | java -jar drawapp-4.5.jar
+./main | java -jar drawapp-4.5.jar
 ```
 With arguments:
 ```bash
