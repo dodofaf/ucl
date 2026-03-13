@@ -30,4 +30,8 @@ class Column {
     public void addRowValue(String value) {
         data.add(value);
     }
+
+    public ArrayList<String> getData() {
+        return data;
+    }
 }

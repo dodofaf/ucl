@@ -50,4 +50,12 @@ class DataFrame {
                 col.addRowValue(value);
         }
     }
+
+    public ArrayList<String> getColumn(String name) {
+        for (Column col : columns) {
+            if (col.getName().equals(name))
+                return col.getData();
+        }
+        return new ArrayList<>();
+    }
 }

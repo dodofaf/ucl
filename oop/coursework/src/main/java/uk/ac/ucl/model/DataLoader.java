@@ -7,8 +7,8 @@ import java.util.Arrays;
 
 public class DataLoader {
     DataFrame loadDataFrame(String filepath) {
+        DataFrame frame = new DataFrame();
         try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
-            DataFrame frame = new DataFrame();
             String line = br.readLine();
             if (line == null)
                 return frame;
@@ -33,10 +33,10 @@ public class DataLoader {
                     ++i;
                 }
             }
-
-            return frame;
         } catch (IOException e) {
-            return null;
+            System.err.println("Invalid filepath.");
         }
+
+        return frame;
     }
 }
