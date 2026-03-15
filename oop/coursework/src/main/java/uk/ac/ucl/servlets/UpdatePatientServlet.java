@@ -18,6 +18,12 @@ import java.util.Map;
 
 @WebServlet("/updatePatient")
 public class UpdatePatientServlet extends HttpServlet {
+     /**
+     * Handles HTTP GET requests.
+     * Retrieves the current data for a specific patient and forwards it to the update form.
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String patientId = request.getParameter("id");
         Model model = ModelFactory.getModel();
@@ -31,6 +37,12 @@ public class UpdatePatientServlet extends HttpServlet {
         dispatch.forward(request, response);
     }
 
+     /**
+     * Handles HTTP POST requests.
+     * Parses the updated form fields, pushes the changes to the model, and redirects.
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String patientId = request.getParameter("id");
         Model model = ModelFactory.getModel();

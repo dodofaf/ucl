@@ -18,6 +18,13 @@ import java.util.Map;
 @WebServlet("/viewData")
 public class ViewDataServlet extends HttpServlet
 {
+     /**
+     * Handles HTTP GET requests.
+     * Extracts sorting preferences, fetches the corresponding sorted data from the Model,
+     * and forwards it to the view.
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String sortBy = request.getParameter("sort");
         String sortOrder = request.getParameter("order");

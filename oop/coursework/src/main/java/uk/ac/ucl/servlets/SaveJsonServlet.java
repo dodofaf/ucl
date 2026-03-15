@@ -13,6 +13,12 @@ import java.io.PrintWriter;
 
 @WebServlet("/saveJson")
 public class SaveJsonServlet extends HttpServlet {
+     /**
+     * Handles HTTP GET requests.
+     * Configures the response to act as a downloadable JSON file and streams the data.
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

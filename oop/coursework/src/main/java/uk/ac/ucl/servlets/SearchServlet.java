@@ -17,10 +17,21 @@ import java.util.Map;
 
 @WebServlet("/runsearch")
 public class SearchServlet extends HttpServlet {
+     /**
+     * Handles HTTP GET requests by routing them to the POST logic.
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
+     /**
+     * Handles HTTP POST requests.
+     * Extracts search parameters, queries the model, and forwards the results.
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String searchString = request.getParameter("searchstring");
         String column = request.getParameter("column");

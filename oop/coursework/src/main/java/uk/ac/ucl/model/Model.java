@@ -12,6 +12,10 @@ public class Model
 {
     private DataFrame patients;
 
+     /**
+     * Generates a list of formatted full names for all patients, alongside their IDs.
+     * @return A List of key-value pairs where the key is the Patient ID and the value is their full formatted name.
+     */
     public List<Map.Entry<String, String>> getPatientNames()
     {
         List<String> prefixes = patients.getColumn("PREFIX");
@@ -34,6 +38,11 @@ public class Model
         return names;
     }
 
+     /**
+     * Retrieves all data associated with a specific patient ID.
+     * @param patientID The ID of the patient.
+     * @return A List of Map entries representing the patient's data, or null if the patient is not found.
+     */
     public List<Map.Entry<String, String>> getPatientsData(String patientID) {
         int row = patients.getRowNumber("ID", patientID);
         if (row == -1)
@@ -41,12 +50,22 @@ public class Model
         return patients.getRow(row);
     }
 
+     /**
+     * Loads patient data from a CSV file into the DataFrame.
+     * @param fileName The path to the CSV file to read.
+     */
     public void readFile(String fileName)
     {
         DataLoader loader = new DataLoader();
         patients = loader.loadDataFrame(fileName);
     }
 
+     /**
+     * Searches for a keyword either within a specific column or across all columns.
+     * @param column  The specific column to search in, or "all" to search globally.
+     * @param keyword The search term.
+     * @return A List of Map entries containing the ID and formatted name of matching patients.
+     */
     public List<Map.Entry<String, String>> searchFor(String column, String keyword) {
         List<Integer> matchedRows;
 
@@ -77,10 +96,18 @@ public class Model
         return results;
     }
 
+     /**
+     * Gets the names of all columns currently in the DataFrame.
+     * @return A list of column header names.
+     */
     public List<String> getColumnNames() {
         return patients.getColumnNames();
     }
 
+     /**
+     * Adds a new patient record to the DataFrame and saves the updated data to CSV.
+     * @param patientData A map containing column names as keys and the new patient's data as values.
+     */
     public void addPatient(Map<String, String> patientData) {
         for (String colName : getColumnNames()) {
             String value = patientData.getOrDefault(colName, "");
@@ -89,6 +116,11 @@ public class Model
         saveToCSV("data/patiens_new.csv");
     }
 
+     /**
+     * Updates an existing patient's record based on their ID, then saves to CSV.
+     * @param patientId   The ID of the patient to update.
+     * @param patientData A map of the columns to update and their new values.
+     */
     public void updatePatient(String patientId, Map<String, String> patientData) {
         int row = patients.getRowNumber("ID", patientId);
         if (row != -1) {
@@ -101,6 +133,10 @@ public class Model
         saveToCSV("data/patiens_new.csv");
     }
 
+     /**
+     * Removes a patient record from the DataFrame based on their ID, then saves to CSV.
+     * @param patientId The ID of the patient to delete.
+     */
     public void deletePatient(String patientId) {
         int row = patients.getRowNumber("ID", patientId);
         if (row != -1) {
@@ -109,6 +145,10 @@ public class Model
         saveToCSV("data/patiens_new.csv");
     }
 
+     /**
+     * Serializes the current state of the DataFrame into a CSV file.
+     * @param filePath The destination path where the CSV will be saved.
+     */
     public void saveToCSV(String filePath) {
         if (patients == null || patients.getRowCount() == 0) {
             System.out.println("No data to save.");
@@ -150,6 +190,10 @@ public class Model
         }
     }
 
+     /**
+     * Exports the current DataFrame data as a JSON object using the injected writer.
+     * @param writer The PrintWriter to stream the JSON output to.
+     */
     public void exportJSON(PrintWriter writer) {
         if (patients != null) {
             JSONWriter jsonWriter = new JSONWriter();
@@ -157,6 +201,12 @@ public class Model
         }
     }
 
+     /**
+     * Retrieves all patient records, optionally sorting them by a specific column.
+     * @param sortByColumn The name of the column to sort by (can be null).
+     * @param sortOrder    The direction of the sort ("asc" or "desc").
+     * @return A list of mapped patient rows.
+     */
     public List<Map<String, String>> getAllPatients(String sortByColumn, String sortOrder) {
         List<Map<String, String>> allRows = new ArrayList<>();
 

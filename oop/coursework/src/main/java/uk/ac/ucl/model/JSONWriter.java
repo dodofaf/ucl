@@ -4,6 +4,12 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class JSONWriter {
+     /**
+     * Converts the contents of a DataFrame into a JSON array of objects
+     * and writes it to the provided PrintWriter.
+     * @param frame  The DataFrame containing the data to be serialized.
+     * @param writer The PrintWriter to stream the formatted JSON output to.
+     */
     public void writeJSON(DataFrame frame, PrintWriter writer) {
         if (frame == null || frame.getRowCount() == 0) {
             writer.print("[]");

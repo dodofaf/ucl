@@ -12,6 +12,12 @@ import java.io.IOException;
 
 @WebServlet("/deletePatient")
 public class DeletePatientServlet extends HttpServlet {
+     /**
+     * Handles HTTP POST requests.
+     * Deletes the requested patient from the Model and redirects to the home page.
+     * @param request  The HttpServletRequest object containing the patient ID.
+     * @param response The HttpServletResponse object used for redirection.
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String patientId = request.getParameter("id");
 

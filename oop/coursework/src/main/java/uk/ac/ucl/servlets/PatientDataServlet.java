@@ -17,10 +17,22 @@ import java.util.Map;
 
 @WebServlet("/patient")
 public class PatientDataServlet extends HttpServlet {
+     /**
+     * Handles HTTP GET requests by routing them directly to the POST logic.
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
+     /**
+     * Handles HTTP POST requests.
+     * Fetches a patient's details from the Model using the provided ID parameter
+     * and forwards the data to the appropriate JSP view.
+     * @param request  The HttpServletRequest object containing the "id" parameter.
+     * @param response The HttpServletResponse object.
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String patientID = request.getParameter("id");
 

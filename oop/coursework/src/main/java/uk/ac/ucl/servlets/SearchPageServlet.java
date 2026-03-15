@@ -15,6 +15,12 @@ import java.util.List;
 
 @WebServlet("/search")
 public class SearchPageServlet extends HttpServlet {
+     /**
+     * Handles HTTP GET requests.
+     * Fetches column names to populate the search criteria dropdown and forwards to the view.
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             Model model = ModelFactory.getModel();

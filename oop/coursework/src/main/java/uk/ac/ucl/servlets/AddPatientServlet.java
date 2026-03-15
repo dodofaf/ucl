@@ -18,6 +18,13 @@ import java.util.Map;
 
 @WebServlet("/addPatient")
 public class AddPatientServlet extends HttpServlet {
+     /**
+     * Handles HTTP GET requests.
+     * Retrieves the necessary column names from the model and forwards the user
+     * to the patient addition form.
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Model model = ModelFactory.getModel();
         request.setAttribute("columns", model.getColumnNames());
@@ -27,6 +34,13 @@ public class AddPatientServlet extends HttpServlet {
         dispatch.forward(request, response);
     }
 
+     /**
+     * Handles HTTP POST requests.
+     * Extracts submitted form data, packages it into a map, adds it to the model,
+     * and redirects back to the main index page.
+     * @param request  The HttpServletRequest object containing form parameters.
+     * @param response The HttpServletResponse object used for redirection.
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Model model = ModelFactory.getModel();
         List<String> columns = model.getColumnNames();

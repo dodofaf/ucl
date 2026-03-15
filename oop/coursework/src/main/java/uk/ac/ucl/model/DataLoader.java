@@ -6,6 +6,12 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class DataLoader {
+     /**
+     * Reads a CSV file from the specified filepath and populates a DataFrame.
+     * The first line of the CSV is expected to contain the column headers.
+     * @param filepath The relative or absolute path to the CSV file.
+     * @return A populated DataFrame containing the parsed CSV data.
+     */
     DataFrame loadDataFrame(String filepath) {
         DataFrame frame = new DataFrame();
         try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
