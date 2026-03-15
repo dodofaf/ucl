@@ -88,4 +88,29 @@ public class Model
     public List<String> getColumnNames() {
         return patients.getColumnNames();
     }
+
+    public void addPatient(Map<String, String> patientData) {
+        for (String colName : getColumnNames()) {
+            String value = patientData.getOrDefault(colName, "");
+            patients.addValue(colName, value);
+        }
+    }
+
+    public void updatePatient(String patientId, Map<String, String> patientData) {
+        int row = patients.getRowNumber("ID", patientId);
+        if (row != -1) {
+            for (String colName : getColumnNames()) {
+                if (patientData.containsKey(colName)) {
+                    patients.putValue(colName, row, patientData.get(colName));
+                }
+            }
+        }
+    }
+
+    public void deletePatient(String patientId) {
+        int row = patients.getRowNumber("ID", patientId);
+        if (row != -1) {
+            patients.removeRow(row);
+        }
+    }
 }

@@ -51,4 +51,8 @@ class Column {
                 search_res.add(i);
         return search_res;
     }
+
+    public void removeValue(int row) {
+        data.remove(row);
+    }
 }

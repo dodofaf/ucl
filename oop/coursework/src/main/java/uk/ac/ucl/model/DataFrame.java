@@ -89,4 +89,8 @@ class DataFrame {
         }
         return search_res;
     }
+
+    public void removeRow(int row) {
+
+    }
 }
