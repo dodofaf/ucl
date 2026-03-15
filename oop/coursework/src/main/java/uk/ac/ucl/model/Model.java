@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -154,5 +155,37 @@ public class Model
             JSONWriter jsonWriter = new JSONWriter();
             jsonWriter.writeJSON(patients, writer);
         }
+    }
+
+    public List<Map<String, String>> getAllPatients(String sortByColumn, String sortOrder) {
+        List<Map<String, String>> allRows = new ArrayList<>();
+
+        List<String> columns = patients.getColumnNames();
+        int rowCount = patients.getRowCount();
+
+        for (int i = 0; i < rowCount; i++) {
+            Map<String, String> row = new LinkedHashMap<>();
+            for (String col : columns) {
+                row.put(col, patients.getValue(col, i));
+            }
+            allRows.add(row);
+        }
+
+        if (sortByColumn != null && columns.contains(sortByColumn)) {
+            boolean isDesc = "desc".equalsIgnoreCase(sortOrder);
+
+            allRows.sort((row1, row2) -> {
+                String val1 = row1.get(sortByColumn);
+                String val2 = row2.get(sortByColumn);
+
+                if (val1 == null) val1 = "";
+                if (val2 == null) val2 = "";
+
+                int comparisonResult = val1.compareToIgnoreCase(val2);
+                return isDesc ? -comparisonResult : comparisonResult;
+            });
+        }
+
+        return allRows;
     }
 }
