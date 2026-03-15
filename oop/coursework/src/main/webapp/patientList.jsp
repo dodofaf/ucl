@@ -1,4 +1,5 @@
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -21,14 +22,13 @@
   %>
   <ul>
     <%
-      List<String> patients = (List<String>) request.getAttribute("patientNames");
+      List<Map.Entry<String, String>> patients = (List<Map.Entry<String, String>>) request.getAttribute("patientNames");
       if (patients != null)
       {
-        for (String patient : patients)
+        for (Map.Entry<String, String> patient : patients)
         {
-          String href = "dummypage.html";
     %>
-    <li><a href="<%=href%>"><%=patient%></a>
+    <li><a href="/patient?id=<%= patient.getKey() %>"><%=patient.getValue()%></a>
     </li>
     <%  }
       }

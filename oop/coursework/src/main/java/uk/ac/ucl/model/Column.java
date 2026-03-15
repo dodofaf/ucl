@@ -1,6 +1,8 @@
 package uk.ac.ucl.model;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 class Column {
     private final String name;
@@ -33,5 +35,20 @@ class Column {
 
     public ArrayList<String> getData() {
         return data;
+    }
+
+    public int getRowNumber(String value) {
+        for (int i=0;i<data.size();++i)
+            if (data.get(i).equals(value))
+                return i;
+        return -1;
+    }
+
+    public List<Integer> search(String key) {
+        List<Integer> search_res = new ArrayList<>();
+        for (int i=0;i<data.size();++i)
+            if (data.get(i).equals(key))
+                search_res.add(i);
+        return search_res;
     }
 }

@@ -1,28 +1,23 @@
 package uk.ac.ucl.model;
 
-import java.io.Reader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
+import java.util.Map;
 
 public class Model
 {
     // The example code in this class should be replaced by your Model class code.
-    // The data should be stored in a suitable data structure.
-    private DataFrame data;
+    // The patients should be stored in a suitable patients structure.
+    private DataFrame patients;
 
-    public List<String> getPatientNames()
+    public List<Map.Entry<String, String>> getPatientNames()
     {
-        List<String> prefixes = data.getColumn("PREFIX");
-        List<String> first = data.getColumn("FIRST");
-        List<String> last = data.getColumn("LAST");
-        List<String> suffixes = data.getColumn("SUFFIX");
-        List<String> names = new ArrayList<>(data.getRowCount());
-        for (int i=0;i<data.getRowCount();++i) {
+        List<String> prefixes = patients.getColumn("PREFIX");
+        List<String> first = patients.getColumn("FIRST");
+        List<String> last = patients.getColumn("LAST");
+        List<String> suffixes = patients.getColumn("SUFFIX");
+        List<Map.Entry<String, String>> names = new ArrayList<>(patients.getRowCount());
+        for (int i = 0; i< patients.getRowCount(); ++i) {
             String name = "";
             if (!prefixes.get(i).isEmpty())
                 name += prefixes.get(i) + " ";
@@ -32,24 +27,65 @@ public class Model
                 name += last.get(i) + " ";
             if (!suffixes.get(i).isEmpty())
                 name += suffixes.get(i) + " ";
-            names.add(name);
+            names.add(Map.entry(patients.getValue("ID", i), name));
         }
         return names;
     }
 
-    // This method illustrates how to read csv data from a file.
-    // The data files are stored in the root directory of the project (the directory your project is in),
-    // in the directory named data.
+    public List<Map.Entry<String, String>> getPatientsData(String patientID) {
+        int row = patients.getRowNumber("ID", patientID);
+        if (row == -1)
+            return null;
+        return patients.getRow(row);
+    }
+
+    // This method illustrates how to read csv patients from a file.
+    // The patients files are stored in the root directory of the project (the directory your project is in),
+    // in the directory named patients.
     public void readFile(String fileName)
     {
         DataLoader loader = new DataLoader();
-        data = loader.loadDataFrame(fileName);
+        patients = loader.loadDataFrame(fileName);
     }
 
-    // This also returns dummy data. The real version should use the keyword parameter to search
-    // the data and return a list of matching items.
-    public List<String> searchFor(String keyword)
-    {
-        return List.of("Search keyword is: "+ keyword, "result1", "result2", "result3");
+    // This also returns dummy patients. The real version should use the keyword parameter to search
+    // the patients and return a list of matching items.
+    // Updated searchFor method
+    public List<Map.Entry<String, String>> searchFor(String column, String keyword) {
+        List<Integer> matchedRows;
+
+        // If 'column' is null, empty, or set to "all", use searchALL
+        if (column == null || column.trim().isEmpty() || column.equalsIgnoreCase("all")) {
+            // Note: The first argument "all" is ignored by your DataFrame's searchALL implementation
+            matchedRows = patients.searchALL("all", keyword);
+        } else {
+            // Otherwise, search within the specific column provided
+            matchedRows = patients.searchColumn(column, keyword);
+        }
+
+        List<Map.Entry<String, String>> results = new ArrayList<>();
+
+        // Map the matched row indices to their corresponding ID and Full Name
+        for (int row : matchedRows) {
+            String name = "";
+            String prefix = patients.getValue("PREFIX", row);
+            String first = patients.getValue("FIRST", row);
+            String last = patients.getValue("LAST", row);
+            String suffix = patients.getValue("SUFFIX", row);
+
+            if (!prefix.isEmpty()) name += prefix + " ";
+            if (!first.isEmpty()) name += first + " ";
+            if (!last.isEmpty()) name += last + " ";
+            if (!suffix.isEmpty()) name += suffix + " ";
+
+            String id = patients.getValue("ID", row);
+            results.add(Map.entry(id, name.trim()));
+        }
+
+        return results;
+    }
+
+    public List<String> getColumnNames() {
+        return patients.getColumnNames();
     }
 }

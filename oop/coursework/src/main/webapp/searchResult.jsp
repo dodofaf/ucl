@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.Map" %> <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
 <head>
@@ -18,16 +18,19 @@
       <p style="color: red;"><%= errorMessage %></p>
   <%
     }
-    List<String> patients = (List<String>) request.getAttribute("result");
+
+    // Updated cast to expect Map.Entry pairs
+    List<Map.Entry<String, String>> patients = (List<Map.Entry<String, String>>) request.getAttribute("result");
+
     if (patients != null && patients.size() != 0)
     {
     %>
     <ul>
       <%
-        for (String patient : patients)
+        for (Map.Entry<String, String> patient : patients)
         {
       %>
-      <li><%=patient%></li>
+      <li><a href="/patient?id=<%= patient.getKey() %>"><%= patient.getValue() %></a></li>
      <% }
     } else if (errorMessage == null)
     {%>
