@@ -41,16 +41,12 @@ public class SearchPageServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // 1. Get the model
             Model model = ModelFactory.getModel();
 
-            // 2. Fetch the column names
             List<String> columnNames = model.getColumnNames();
 
-            // 3. Attach them to the request
             request.setAttribute("columns", columnNames);
 
-            // 4. Forward to the JSP to render the page
             ServletContext context = getServletContext();
             RequestDispatcher dispatch = context.getRequestDispatcher("/search.jsp");
             dispatch.forward(request, response);

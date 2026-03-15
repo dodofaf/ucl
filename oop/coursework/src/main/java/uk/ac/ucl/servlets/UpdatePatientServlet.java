@@ -11,6 +11,7 @@ import uk.ac.ucl.model.Model;
 import uk.ac.ucl.model.ModelFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +26,8 @@ import java.util.Map;
  * 4. Error handling and forwarding to error pages.
  * 5. Request-scoped attribute passing to JSPs for rendering results.
  */
-@WebServlet("/patient")
-public class PatientDataServlet extends HttpServlet {
+@WebServlet("/updatePatient")
+public class UpdatePatientServlet extends HttpServlet {
 
     /**
      * Handles HTTP GET requests.
@@ -40,9 +41,17 @@ public class PatientDataServlet extends HttpServlet {
      * @throws IOException      if an input or output error is detected when the servlet handles the GET request
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
-    }
+        String patientId = request.getParameter("id");
+        Model model = ModelFactory.getModel();
 
+        List<Map.Entry<String, String>> patientData = model.getPatientsData(patientId);
+        request.setAttribute("patientdata", patientData);
+        request.setAttribute("id", patientId);
+
+        ServletContext context = getServletContext();
+        RequestDispatcher dispatch = context.getRequestDispatcher("/updatePatient.jsp");
+        dispatch.forward(request, response);
+    }
     /**
      * Handles HTTP POST requests.
      * This is where the core search logic resides.
@@ -53,27 +62,20 @@ public class PatientDataServlet extends HttpServlet {
      * @throws IOException      if an input or output error is detected when the servlet handles the POST request
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String patientID = request.getParameter("id");
+        String patientId = request.getParameter("id");
+        Model model = ModelFactory.getModel();
+        List<String> columns = model.getColumnNames();
+        Map<String, String> updatedData = new HashMap<>();
 
-        try {
-            Model model = ModelFactory.getModel();
-
-            if (patientID == null || patientID.trim().isEmpty()) {
-                request.setAttribute("errorMessage", "A patient with such ID doesn't exist.");
-            } else {
-                List<Map.Entry<String, String>>  patientsData = model.getPatientsData(patientID);
-                request.setAttribute("patientdata", patientsData);
+        for (String colName : columns) {
+            String value = request.getParameter(colName);
+            if (value != null) {
+                updatedData.put(colName, value);
             }
-
-            ServletContext context = getServletContext();
-            RequestDispatcher dispatch = context.getRequestDispatcher("/patientData.jsp");
-            dispatch.forward(request, response);
-
-        } catch (IOException e) {
-            request.setAttribute("errorMessage", "Error loading data: " + e.getMessage());
-            ServletContext context = getServletContext();
-            RequestDispatcher dispatch = context.getRequestDispatcher("/error.jsp");
-            dispatch.forward(request, response);
         }
+
+        model.updatePatient(patientId, updatedData);
+
+        response.sendRedirect("/patient?id=" + patientId);
     }
 }

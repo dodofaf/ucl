@@ -91,6 +91,8 @@ class DataFrame {
     }
 
     public void removeRow(int row) {
-
+        for (Column col : columns.values()) {
+            col.removeValue(row);
+        }
     }
 }

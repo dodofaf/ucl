@@ -1,5 +1,8 @@
 package uk.ac.ucl.model;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +97,7 @@ public class Model
             String value = patientData.getOrDefault(colName, "");
             patients.addValue(colName, value);
         }
+        saveToCSV("data/patiens_new.csv");
     }
 
     public void updatePatient(String patientId, Map<String, String> patientData) {
@@ -105,12 +109,55 @@ public class Model
                 }
             }
         }
+        saveToCSV("data/patiens_new.csv");
     }
 
     public void deletePatient(String patientId) {
         int row = patients.getRowNumber("ID", patientId);
         if (row != -1) {
             patients.removeRow(row);
+        }
+        saveToCSV("data/patiens_new.csv");
+    }
+
+    public void saveToCSV(String filePath) {
+        if (patients == null || patients.getRowCount() == 0) {
+            System.out.println("No data to save.");
+            return;
+        }
+
+        List<String> columns = patients.getColumnNames();
+        int rowCount = patients.getRowCount();
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+            writer.println(String.join(",", columns));
+
+            for (int i = 0; i < rowCount; i++) {
+                StringBuilder rowString = new StringBuilder();
+
+                for (int j = 0; j < columns.size(); j++) {
+                    String colName = columns.get(j);
+                    String val = patients.getValue(colName, i);
+                    if (val == null) val = "";
+
+                    if (val.contains(",")) {
+                        val = "\"" + val + "\"";
+                    }
+
+                    rowString.append(val);
+
+                    if (j < columns.size() - 1) {
+                        rowString.append(",");
+                    }
+                }
+                writer.println(rowString.toString());
+            }
+
+            System.out.println("Data successfully saved to: " + filePath);
+
+        } catch (IOException e) {
+            System.err.println("Error saving data to CSV: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
