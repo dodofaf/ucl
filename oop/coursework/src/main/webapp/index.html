@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Patient Data</title>
+    <meta charset="UTF-8">
+    <title>Patient Data App</title>
 </head>
 <body>
 <h2>Welcome to the Patient Data App</h2>
 
 <nav>
-  <ul>
-    <li>
-      <a href="patientList">View the Patient ID List</a>
-    </li>
-    <li>
-      <a href="search">Search</a>
-    </li>
-    <li>
-        <a href="addPatient">Add New Patient</a>
-    </li>
-  </ul>
+    <ul>
+        <li><a href="patientList">View the Patient ID List</a></li>
+        <li><a href="search">Search</a></li>
+        <li><a href="addPatient">Add New Patient</a></li>
+        <li><a href="saveJson">Save Data to JSON File</a></li>
+    </ul>
 </nav>
+
+<script>
+    if (window.location.search.includes('saved=true')) {
+        alert("Patient data successfully saved to JSON file on the server!");
+    }
+</script>
 
 </body>
 </html>

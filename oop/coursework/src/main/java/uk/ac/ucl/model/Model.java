@@ -160,4 +160,11 @@ public class Model
             e.printStackTrace();
         }
     }
+
+    public void exportJSON(PrintWriter writer) {
+        if (patients != null) {
+            JSONWriter jsonWriter = new JSONWriter();
+            jsonWriter.writeJSON(patients, writer);
+        }
+    }
 }
