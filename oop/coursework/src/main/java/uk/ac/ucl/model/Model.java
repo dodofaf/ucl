@@ -9,8 +9,6 @@ import java.util.Map;
 
 public class Model
 {
-    // The example code in this class should be replaced by your Model class code.
-    // The patients should be stored in a suitable patients structure.
     private DataFrame patients;
 
     public List<Map.Entry<String, String>> getPatientNames()
@@ -42,33 +40,23 @@ public class Model
         return patients.getRow(row);
     }
 
-    // This method illustrates how to read csv patients from a file.
-    // The patients files are stored in the root directory of the project (the directory your project is in),
-    // in the directory named patients.
     public void readFile(String fileName)
     {
         DataLoader loader = new DataLoader();
         patients = loader.loadDataFrame(fileName);
     }
 
-    // This also returns dummy patients. The real version should use the keyword parameter to search
-    // the patients and return a list of matching items.
-    // Updated searchFor method
     public List<Map.Entry<String, String>> searchFor(String column, String keyword) {
         List<Integer> matchedRows;
 
-        // If 'column' is null, empty, or set to "all", use searchALL
         if (column == null || column.trim().isEmpty() || column.equalsIgnoreCase("all")) {
-            // Note: The first argument "all" is ignored by your DataFrame's searchALL implementation
             matchedRows = patients.searchALL("all", keyword);
         } else {
-            // Otherwise, search within the specific column provided
             matchedRows = patients.searchColumn(column, keyword);
         }
 
         List<Map.Entry<String, String>> results = new ArrayList<>();
 
-        // Map the matched row indices to their corresponding ID and Full Name
         for (int row : matchedRows) {
             String name = "";
             String prefix = patients.getValue("PREFIX", row);
